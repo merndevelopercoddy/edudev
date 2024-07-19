@@ -34,7 +34,9 @@ router.get("/" , async(req , res)=>{
     };
     const finalCategories = [barchasiCategory, ...combinedCategories];
     // console.log(finalCategories[0].courses)
-        res.render("index" , {menu:menu.rows , sliders:sliders.rows , course_category: finalCategories});
+        res.render("index" , 
+        // {menu:menu.rows , sliders:sliders.rows , course_category: finalCategories}
+        );
     } catch (error) {
         console.log(error)
     }
