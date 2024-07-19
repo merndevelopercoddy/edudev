@@ -1,20 +1,13 @@
-require('dotenv').config();
-const { Pool } = require('pg');
-
+require('dotenv').config()
+const { Pool } = require('pg')
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-// Test the connection
+  connectionString: process.env.DATABASE_URL + "?sslmode=require",
+})
 pool.connect((err) => {
-  if (err) {
-    console.error('Connection error', err.stack);
-  } else {
-    console.log('Connected to the database');
-  }
-});
+    if (err) throw err
+    console.log("Connect to PostgreSQL successfully!")
+})
+
 const express = require("express");
 const app = express();
 const router = express.Router();
