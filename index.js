@@ -1,3 +1,20 @@
+require('dotenv').config();
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+// Test the connection
+pool.connect((err) => {
+  if (err) {
+    console.error('Connection error', err.stack);
+  } else {
+    console.log('Connected to the database');
+  }
+});
 const express = require("express");
 const app = express();
 const router = express.Router();
@@ -6,14 +23,8 @@ const homeRoutes = require("./router/home");
 const adminRoutes = require("./router/admin");
 const path = require("path");
 // const pool = require("./config/db");
-const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-require("dotenv").config();
+// const { Pool } = require('pg');
+// require("dotenv").config();
 const exphbs = require("express-handlebars");
 const hbs = exphbs.create({
     defaultLayout:"main",
