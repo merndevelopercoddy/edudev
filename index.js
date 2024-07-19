@@ -5,7 +5,14 @@ const bodyParser = require('body-parser');
 const homeRoutes = require("./router/home");
 const adminRoutes = require("./router/admin");
 const path = require("path");
-const pool = require("./config/db");
+// const pool = require("./config/db");
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 require("dotenv").config();
 const exphbs = require("express-handlebars");
 const hbs = exphbs.create({
