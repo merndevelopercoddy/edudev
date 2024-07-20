@@ -1,13 +1,3 @@
-require('dotenv').config()
-const { Pool } = require('pg')
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL + "?sslmode=require",
-})
-pool.connect((err) => {
-    if (err) throw err
-    console.log("Connect to PostgreSQL successfully!")
-})
-
 const express = require("express");
 const app = express();
 const router = express.Router();
@@ -15,8 +5,8 @@ const bodyParser = require('body-parser');
 const homeRoutes = require("./router/home");
 const adminRoutes = require("./router/admin");
 const path = require("path");
-// const pool = require("./config/db");
-// const { Pool } = require('pg');
+const pool = require("./config/db");
+const { Pool } = require('pg');
 // require("dotenv").config();
 const exphbs = require("express-handlebars");
 const hbs = exphbs.create({

@@ -75,7 +75,7 @@ router.get("/category" , async(req , res)=>{
 router.post("/category/add" , async(req , res)=>{
     try {
         const {category_name} = req.body;
-        await pool.query(`INSERT INTO category (category_name , category_uuid ) VALUES ($1 , uuid_generate_v4())` , [category_name]);
+        await pool.query(`INSERT INTO category (category_name) VALUES ($1)` , [category_name]);
         res.redirect("/admin/category");
     } catch (error) {
         console.log(error)
