@@ -48,8 +48,6 @@
 //     }
 // }
 // start();
-
-
 const express = require("express");
 const app = express();
 const router = express.Router();
@@ -59,6 +57,10 @@ const adminRoutes = require("./router/admin");
 const path = require("path");
 const { Pool } = require('pg');
 require("dotenv").config();
+
+// Debugging: Log the DATABASE_URL
+console.log('DATABASE_URL:', process.env.DATABASE_URL);
+
 const exphbs = require("express-handlebars");
 
 // Set up Handlebars
