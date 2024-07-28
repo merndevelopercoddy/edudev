@@ -11,22 +11,61 @@ router.get("/" , async(req , res)=>{
         console.log(error)
     }
 })
-router.get("/:id" , async(req , res)=>{
-    const {id}  = req.params;
-    try {
-        const sections = await pool.query(`SELECT * FROM curriculum_sections WHERE course_id = $1 ORDER BY position`, [id]);
-    const submenus = await pool.query(`SELECT * FROM submenu WHERE section_id IN (SELECT id FROM curriculum_sections WHERE course_id = $1) ORDER BY position`, [id]);
+// router.get("/:id" , async(req , res)=>{
+//     const {id}  = req.params;
+//     try {
+//         const sections = await pool.query(`SELECT * FROM curriculum_sections WHERE course_id = $1 ORDER BY position`, [id]);
+//     const submenus = await pool.query(`SELECT * FROM submenu WHERE section_id IN (SELECT id FROM curriculum_sections WHERE course_id = $1) ORDER BY position`, [id]);
 
-    const curriculum = sections.rows.map(section => ({
-      ...section,
-      submenu: submenus.rows.filter(submenu => submenu.section_id === section.id)
-    }));
-        console.log(curriculum)
-        res.render("admin/kurs_reja_add" , {title:"Kurs reja qo'shish" , layout:"admin" , id , kurs_reja:curriculum})
-    } catch (error) {
-        console.log(error)
+//     const curriculum = sections.rows.map(section => ({
+//       ...section,
+//       submenu: submenus.rows.filter(submenu => submenu.section_id === section.id)
+//     }));
+//         console.log(curriculum)
+//         res.render("admin/kurs_reja_add" , {title:"Kurs reja qo'shish" , layout:"admin" , id , kurs_reja:curriculum})
+//     } catch (error) {
+//         console.log(error)
+//     }
+// })
+router.get("/:id", async (req, res) => {
+    const { id } = req.params;
+  
+    // Validate input
+    if (!id || isNaN(parseInt(id))) {
+      return res.status(400).send('Invalid course ID.');
     }
-})
+  
+    try {
+      // Fetch sections
+      const { rows: sections } = await pool.query(
+        `SELECT * FROM curriculum_sections WHERE course_id = $1 ORDER BY position`, 
+        [id]
+      );
+  
+      // Fetch submenus
+      const { rows: submenus } = await pool.query(
+        `SELECT * FROM submenu WHERE section_id IN (SELECT id FROM curriculum_sections WHERE course_id = $1) ORDER BY position`, 
+        [id]
+      );
+  
+      // Combine sections and submenus
+      const curriculum = sections.map(section => ({
+        ...section,
+        submenu: submenus.filter(submenu => submenu.section_id === section.id)
+      }));
+  
+      console.log(curriculum);
+      res.render("admin/kurs_reja_add", {
+        title: "Kurs reja qo'shish",
+        layout: "admin",
+        id,
+        kurs_reja: curriculum
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Server error.');
+    }
+  });
 router.post("/:id/add" , async(req , res)=>{
     const { id } = req.params;
   const { title, position } = req.body;
