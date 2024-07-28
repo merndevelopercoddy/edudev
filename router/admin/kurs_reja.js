@@ -14,8 +14,8 @@ router.get("/" , async(req , res)=>{
 router.get("/:id" , async(req , res)=>{
     const {id}  = req.params;
     try {
-        const sections = await pool.query('SELECT * FROM curriculum_sections WHERE course_id = $1 ORDER BY position', [id]);
-    const submenus = await pool.query('SELECT * FROM submenu WHERE section_id IN (SELECT id FROM curriculum_sections WHERE course_id = $1) ORDER BY position', [id]);
+        const sections = await pool.query(`SELECT * FROM curriculum_sections WHERE course_id = $1 ORDER BY position`, [id]);
+    const submenus = await pool.query(`SELECT * FROM submenu WHERE section_id IN (SELECT id FROM curriculum_sections WHERE course_id = $1) ORDER BY position`, [id]);
 
     const curriculum = sections.rows.map(section => ({
       ...section,
