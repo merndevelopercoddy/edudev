@@ -98,7 +98,7 @@ router.post("/delete" , async(req , res)=>{
           }
         });
       }
-        await pool.query(`DELETE FROM curriculum_sections WHERE course_id = $1`, [req.body.id]);
+        // await pool.query(`DELETE FROM curriculum_sections WHERE course_id = $1`, [req.body.id]);
         await pool.query(`DELETE FROM courses WHERE id = $1` , [req.body.id]);
         res.redirect("/admin/courses");
     } catch (error) {
