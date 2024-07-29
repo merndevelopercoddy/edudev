@@ -57,10 +57,10 @@
               <li>
                 <a href="#">
                   <i class="bi bi-circle"></i>
-                  <span>{{title}}</span>
+                  <span>{{title}}{{../../id}}</span>
                 </a>
                 <form action="/admin/submenu/delete" method="POST">
-                    <input type="text" name="kurs_id" value="{{../../id}}">
+                    <input type="hidden" name="kurs_id" value="{{../../id}}">
                     <input type="hidden" name="submenu_id" value="{{id}}">
                     <button class="btn btn-danger" type="submit">
                       <i class="bx bx-basket" style="font-size: 15px;"></i>
