@@ -107,8 +107,14 @@ router.post("/:id/delete" , async(req , res)=>{
     try {
         const {kurs_id} = req.body;
         const {id} = req.params;
-        await pool.query(`DELETE FROM submenu WHERE section_id = $1` , [id]);
-        await pool.query(`DELETE from curriculum_sections WHERE id = $1` , [id]);
+        if (!kurs_id || isNaN(parseInt(kurs_id))) {
+            return res.status(400).send('Invalid course ID.');
+          }
+          if (!id || isNaN(parseInt(id))) {
+            return res.status(400).send('Invalid section ID.');
+          }
+        await pool.query('DELETE FROM submenu WHERE section_id = $1' , [id]);
+        await pool.query('DELETE from curriculum_sections WHERE id = $1' , [id]);
         res.redirect(`/admin/kurs_reja/${kurs_id}`);
     } catch (error) {
         console.log(error)
